@@ -1,5 +1,12 @@
 ﻿#include "cvkits.h"
+#include "cutimage.h"
+#include "qdialog.h"
+#include "qdir.h"
+#include "qfileinfo.h"
+#include "qpixmap.h"
 #include <QDebug>
+#include <QUuid>
+#include <QString>
 CVKits::CVKits()
 {
 
@@ -28,4 +35,28 @@ void CVKits::enhance(cv::Mat src, cv::Mat &dst) {
         equalizeHist(chan[i], chan[i]);
     }
     merge(chan, 3, dst);
+}
+
+void CVKits::crop(cv::Mat src, cv::Mat &dst) {
+    using namespace cv;
+    QString str = "C:\\Users\\26286\\Desktop\\ImageProcess\\testImageProcess\\tmp\\" + QUuid::createUuid().toString() + ".tmp.png";
+    cv::String tmpDir = str.toStdString();
+    cv::imwrite(tmpDir, src);
+    CutImage dialog{str};
+    QFileInfo fileinfo{str};
+
+    if ( dialog.exec() == QDialog::Accepted ) {
+        QPixmap cropImage = dialog.getCropImage();
+
+        QString filename = fileinfo.baseName();
+        QString new_filename = filename + "_croped." + fileinfo.completeSuffix();
+
+        QString dir = "C:\\Users\\26286\\Desktop\\ImageProcess\\testImageProcess\\tmp";
+        QFileInfo new_file {dir, new_filename};
+
+        qDebug() << new_file.absoluteFilePath();
+        cropImage.save(new_file.absoluteFilePath());
+        dst = cv::imread(new_file.absoluteFilePath().toStdString());
+    }
+    else dst = src;
 }

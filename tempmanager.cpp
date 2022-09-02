@@ -17,7 +17,7 @@ QString TempManager::get_response_tempfile() {
 }
 
 QString TempManager::get_cv_tempfile() {
-    qDebug() << "FUCK";
+    //qDebug() << "FUCK";
     QString str = "C:\\Users\\26286\\Desktop\\ImageProcess\\ipc_5_9\\image-processing-client\\tmp\\cv-" + remove_brace(QUuid::createUuid().toString()) + ".tmp.png";
 
     return str;

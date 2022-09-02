@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->imageDenoiseButton, SIGNAL(clicked()), this, SLOT(denoiseClicked()));
     connect(ui->imageEnhanceButton, SIGNAL(clicked()), this, SLOT(enhanceClicked()));
+    connect(ui->cropButton, SIGNAL(clicked()), this, SLOT(cropClicked()));
 
     openReceiveDialog();
 
@@ -205,3 +206,11 @@ void MainWindow::enhanceClicked() {
     setPreviewImage(output);
 }
 
+void MainWindow::cropClicked() {
+    if (currentPreviewImagePath.isEmpty()) {
+        QMessageBox::warning(this, "无图片", "没有可以裁剪的图片。");
+        return;
+    }
+    QString output = processImage(currentPreviewImagePath, &CVKits::crop);
+    setPreviewImage(output);
+}

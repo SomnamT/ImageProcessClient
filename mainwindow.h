@@ -34,7 +34,7 @@ public slots:
 
     void denoiseClicked();
     void enhanceClicked();
-
+    void cropClicked();
 private:
     QString processImage(QString path, void (*func)(cv::Mat, cv::Mat&));
 
